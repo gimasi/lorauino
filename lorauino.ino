@@ -517,6 +517,7 @@ void LoRaWan_personalization (String DevAddr, String NwkSKey, String AppSKey) {
 void LoRaWan_join (String AppEUI, String DevEUI, String AppKey) {
   String cmd;
   String DevEUI2;
+  String AppEUI2;
   String swap;
   byte status = 0;
   String error_str = F("LW: ERROR Join: Invalid ");
@@ -543,14 +544,16 @@ void LoRaWan_join (String AppEUI, String DevEUI, String AppKey) {
       while(1){}
     }
 
-    // rotate DevEUI
+    // rotate DevEUI and AppEUI
     for(int i=DevEUI.length()-2;i>=0;i-=2) {
       swap = DevEUI.substring(i,i+2);
       DevEUI2 += swap;
+      swap = AppEUI.substring(i,i+2);
+      AppEUI2 += swap;
     }
 
     cmd = "AT%JOIN";
-    cmd += " " + AppEUI;
+    cmd += " " + AppEUI2;
     cmd += " " + DevEUI2;
     cmd += " " + AppKey;
     
@@ -563,7 +566,7 @@ void LoRaWan_join (String AppEUI, String DevEUI, String AppKey) {
 
   } while (status == 0);
 
-  delay (2000);
+  delay (4000);
 }
 
 //---------------------------------------------------
@@ -915,3 +918,4 @@ void LoRaWan_modem_wake_up(){
   // Wait the modem to wake up
   delay(2000);
 }
+
